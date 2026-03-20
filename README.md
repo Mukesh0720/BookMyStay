@@ -1,87 +1,73 @@
-# UC4 - Room Search (Read-Only Access)
+# UC5 - Booking Request Queue (FIFO)
 
 ## Objective
 
-To enable guests to view available rooms and their details without modifying system state, ensuring safe data access and clear separation of responsibilities.
+To handle multiple booking requests fairly by introducing a queue-based request intake mechanism that preserves arrival order.
 
 ---
 
 ## Concepts Covered
 
-* Read-Only Access
-* Separation of Concerns
-* Defensive Programming
-* Domain Model Usage
-* Validation Logic
+* Queue Data Structure
+* FIFO (First-In-First-Out)
+* Fairness in request handling
+* Decoupling request intake from allocation
 
 ---
 
 ## Problem Statement
 
-In previous use cases, room details and availability were displayed directly from the main application.
+During peak demand, multiple booking requests may arrive simultaneously.
 
-This approach:
+Without proper ordering:
 
-* Mixed display logic with business logic
-* Did not enforce read-only behavior
-* Made the system harder to scale and maintain
+* Requests may be processed unfairly
+* Some users may bypass others
+* System behavior becomes inconsistent
 
 ---
 
 ## Solution
 
-A dedicated **RoomSearchService** is introduced to handle search functionality.
+A **Queue<Reservation>** is introduced to store booking requests.
 
-* Retrieves availability from `RoomInventory`
-* Uses `Room` objects for room details
-* Filters out unavailable rooms
-* Ensures no modification of system state
+* Requests are added to the queue
+* Queue maintains insertion order automatically
+* Processing follows FIFO principle
 
 ---
 
-## Description
+## Components
 
-### Components Involved
+### 1. Reservation
 
-#### 1. RoomInventory
+* Represents a booking request
+* Contains guest name and requested room type
 
-* Acts as a centralized data source
-* Provides availability using HashMap
-* No updates are performed during search
+### 2. BookingQueue
 
-#### 2. Room (Domain Model)
-
-* Provides room details such as:
-
-    * Room type
-    * Number of beds
-    * Price
-
-#### 3. RoomSearchService
-
-* Handles search logic
-* Filters rooms with availability > 0
-* Displays only valid options
+* Stores requests using Queue
+* Adds requests using `offer()`
+* Displays queue without removing elements
 
 ---
 
 ## Application Flow
 
-1. User runs the application
-2. Inventory is initialized
-3. Search service is created
-4. Search operation is performed
-5. Only available rooms are displayed
-6. Application terminates
+1. Guest submits booking request
+2. Request is added to queue
+3. Requests are stored in arrival order
+4. Queue is displayed
+5. No inventory changes occur
 
 ---
 
 ## Key Features
 
-* No modification of inventory data
-* Only available rooms are shown
-* Clean separation between search and booking logic
-* Reusable and scalable design
+* Fair request handling (FIFO)
+* No request bypassing
+* No inventory mutation
+* Clean separation from allocation logic
 
 ---
 
@@ -89,20 +75,18 @@ A dedicated **RoomSearchService** is introduced to handle search functionality.
 
 Displays:
 
-* Room type
-* Number of beds
-* Price
-* Available count (only if > 0)
+* Guest name
+* Requested room type
+* Order of requests (FIFO)
 
 ---
 
 ## Learning Outcome
 
-* Understand read-only system operations
-* Implement safe data access patterns
-* Apply separation of concerns in system design
-* Use validation to filter meaningful results
-* Prepare system for future booking integration
+* Understand Queue data structure
+* Implement FIFO behavior
+* Ensure fairness in system design
+* Prepare for booking allocation logic
 
 ---
 
@@ -116,6 +100,8 @@ app/src/
 ├── SuiteRoom.java
 ├── RoomInventory.java
 ├── RoomSearchService.java
+├── Reservation.java
+├── BookingQueue.java
 
 ---
 
