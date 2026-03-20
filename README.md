@@ -1,90 +1,130 @@
-# UC2 - Room Modeling using OOP
+# UC4 - Room Search (Read-Only Access)
 
 ## Objective
 
-To introduce object-oriented design concepts such as abstraction, inheritance, and polymorphism by modeling different types of rooms in a hotel booking system.
+To enable guests to view available rooms and their details without modifying system state, ensuring safe data access and clear separation of responsibilities.
 
 ---
 
 ## Concepts Covered
 
-* Abstract Class
-* Inheritance
-* Polymorphism
-* Encapsulation
-* Static Availability Representation
-* Separation of Domain and State
+* Read-Only Access
+* Separation of Concerns
+* Defensive Programming
+* Domain Model Usage
+* Validation Logic
+
+---
+
+## Problem Statement
+
+In previous use cases, room details and availability were displayed directly from the main application.
+
+This approach:
+
+* Mixed display logic with business logic
+* Did not enforce read-only behavior
+* Made the system harder to scale and maintain
+
+---
+
+## Solution
+
+A dedicated **RoomSearchService** is introduced to handle search functionality.
+
+* Retrieves availability from `RoomInventory`
+* Uses `Room` objects for room details
+* Filters out unavailable rooms
+* Ensures no modification of system state
 
 ---
 
 ## Description
 
-This use case models hotel room types using object-oriented principles.
+### Components Involved
 
-* `Room` is an abstract class that defines common properties like room type, number of beds, and price.
-* `SingleRoom`, `DoubleRoom`, and `SuiteRoom` extend the `Room` class.
-* Availability is stored using simple variables instead of data structures.
-* Room details and availability are displayed on the console.
+#### 1. RoomInventory
+
+* Acts as a centralized data source
+* Provides availability using HashMap
+* No updates are performed during search
+
+#### 2. Room (Domain Model)
+
+* Provides room details such as:
+
+    * Room type
+    * Number of beds
+    * Price
+
+#### 3. RoomSearchService
+
+* Handles search logic
+* Filters rooms with availability > 0
+* Displays only valid options
 
 ---
 
 ## Application Flow
 
-1. Application starts from `main()` method
-2. Room objects are created using polymorphism
-3. Availability is assigned using variables
-4. Room details and availability are printed
-5. Application terminates
+1. User runs the application
+2. Inventory is initialized
+3. Search service is created
+4. Search operation is performed
+5. Only available rooms are displayed
+6. Application terminates
+
+---
+
+## Key Features
+
+* No modification of inventory data
+* Only available rooms are shown
+* Clean separation between search and booking logic
+* Reusable and scalable design
 
 ---
 
 ## Output
 
-```
-====================================
- Welcome to Hotel Booking System 
- Version: v1.0 
-====================================
+Displays:
 
---- Room Details & Availability ---
-
-Room Type: Single Room
-Beds: 1
-Price: ₹1000
-Available: 5
-
-Room Type: Double Room
-Beds: 2
-Price: ₹2000
-Available: 3
-
-Room Type: Suite Room
-Beds: 3
-Price: ₹5000
-Available: 2
-
-Application terminated.
-```
+* Room type
+* Number of beds
+* Price
+* Available count (only if > 0)
 
 ---
 
 ## Learning Outcome
 
-* Understand abstraction using abstract classes
-* Learn inheritance and code reuse
-* Use polymorphism for flexible design
-* Separate domain objects from system state
-* Prepare for future data structure integration
+* Understand read-only system operations
+* Implement safe data access patterns
+* Apply separation of concerns in system design
+* Use validation to filter meaningful results
+* Prepare system for future booking integration
 
 ---
 
 ## File Structure
 
-```
 app/src/
 ├── HotelBookingApp.java
 ├── Room.java
 ├── SingleRoom.java
 ├── DoubleRoom.java
 ├── SuiteRoom.java
-```
+├── RoomInventory.java
+├── RoomSearchService.java
+
+---
+
+## How to Run
+
+### Compile
+
+javac *.java
+
+### Run
+
+java HotelBookingApp
