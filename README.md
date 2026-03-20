@@ -1,58 +1,90 @@
-# UC1 - Application Entry Point
+# UC2 - Room Modeling using OOP
 
 ## Objective
-To establish the starting point of the Hotel Booking Management System by demonstrating how a Java application begins execution and produces console output.
+
+To introduce object-oriented design concepts such as abstraction, inheritance, and polymorphism by modeling different types of rooms in a hotel booking system.
 
 ---
 
 ## Concepts Covered
-- Class
-- main() method
-- static keyword
-- Console output (System.out.println)
-- String literals
-- Method invocation
-- Linear execution flow
-- JavaDoc comments and annotations
+
+* Abstract Class
+* Inheritance
+* Polymorphism
+* Encapsulation
+* Static Availability Representation
+* Separation of Domain and State
 
 ---
 
 ## Description
-This use case implements the basic structure of a Java application.  
-It defines a class `HotelBookingApp` which contains the `main()` method — the entry point of execution.
 
-When the program runs:
-1. JVM invokes the main() method
-2. A welcome message is printed
-3. Application name and version are displayed
-4. Program terminates successfully
+This use case models hotel room types using object-oriented principles.
+
+* `Room` is an abstract class that defines common properties like room type, number of beds, and price.
+* `SingleRoom`, `DoubleRoom`, and `SuiteRoom` extend the `Room` class.
+* Availability is stored using simple variables instead of data structures.
+* Room details and availability are displayed on the console.
+
+---
+
+## Application Flow
+
+1. Application starts from `main()` method
+2. Room objects are created using polymorphism
+3. Availability is assigned using variables
+4. Room details and availability are printed
+5. Application terminates
 
 ---
 
 ## Output
+
+```
 ====================================
-Welcome to Hotel Booking System
-Version: v1.0
+ Welcome to Hotel Booking System 
+ Version: v1.0 
+====================================
 
-Application started successfully.
+--- Room Details & Availability ---
+
+Room Type: Single Room
+Beds: 1
+Price: ₹1000
+Available: 5
+
+Room Type: Double Room
+Beds: 2
+Price: ₹2000
+Available: 3
+
+Room Type: Suite Room
+Beds: 3
+Price: ₹5000
+Available: 2
+
 Application terminated.
-
+```
 
 ---
 
-## How to Run
+## Learning Outcome
 
-### Compile
-```bash
-javac HotelBookingApp.java
-Run
-java HotelBookingApp
-Learning Outcome
+* Understand abstraction using abstract classes
+* Learn inheritance and code reuse
+* Use polymorphism for flexible design
+* Separate domain objects from system state
+* Prepare for future data structure integration
 
-Understand how Java execution begins
+---
 
-Learn the role of main() method
+## File Structure
 
-Understand basic console output
-
-Build foundation for further use cases
+```
+app/src/
+├── HotelBookingApp.java
+├── Room.java
+├── SingleRoom.java
+├── DoubleRoom.java
+├── SuiteRoom.java
+```
