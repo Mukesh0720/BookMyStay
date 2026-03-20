@@ -1,0 +1,14 @@
+abstract class Room {
+
+    protected String roomType;
+    protected int beds;
+    protected double price;
+
+    public Room(String roomType, int beds, double price) {
+        this.roomType = roomType;
+        this.beds = beds;
+        this.price = price;
+    }
+
+    public abstract void displayDetails();
+}
