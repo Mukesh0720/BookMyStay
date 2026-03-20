@@ -1,92 +1,86 @@
-# UC5 - Booking Request Queue (FIFO)
+# UC6 - Booking Allocation & Inventory Update
 
 ## Objective
 
-To handle multiple booking requests fairly by introducing a queue-based request intake mechanism that preserves arrival order.
+To confirm booking requests by assigning rooms safely while ensuring inventory consistency and preventing double-booking.
 
 ---
 
 ## Concepts Covered
 
-* Queue Data Structure
-* FIFO (First-In-First-Out)
-* Fairness in request handling
-* Decoupling request intake from allocation
+* Set (Uniqueness enforcement)
+* HashMap (Grouped tracking)
+* FIFO Queue Processing
+* Inventory Synchronization
+* Atomic Operations
 
 ---
 
 ## Problem Statement
 
-During peak demand, multiple booking requests may arrive simultaneously.
+Without controlled allocation:
 
-Without proper ordering:
-
-* Requests may be processed unfairly
-* Some users may bypass others
-* System behavior becomes inconsistent
+* Same room may be assigned multiple times
+* Inventory may become inconsistent
+* Booking system becomes unreliable
 
 ---
 
 ## Solution
 
-A **Queue<Reservation>** is introduced to store booking requests.
+A BookingService is introduced to:
 
-* Requests are added to the queue
-* Queue maintains insertion order automatically
-* Processing follows FIFO principle
+* Process requests from queue (FIFO)
+* Assign unique room IDs
+* Prevent duplicates using Set
+* Update inventory immediately
 
 ---
 
 ## Components
 
-### 1. Reservation
+### 1. BookingService
 
-* Represents a booking request
-* Contains guest name and requested room type
+* Handles booking logic
+* Ensures safe allocation
 
-### 2. BookingQueue
+### 2. Set<String>
 
-* Stores requests using Queue
-* Adds requests using `offer()`
-* Displays queue without removing elements
+* Stores allocated room IDs
+* Prevents duplicates
+
+### 3. HashMap<String, Set<String>>
+
+* Maps room types to allocated room IDs
 
 ---
 
 ## Application Flow
 
-1. Guest submits booking request
-2. Request is added to queue
-3. Requests are stored in arrival order
-4. Queue is displayed
-5. No inventory changes occur
+1. Booking requests are dequeued
+2. Availability is checked
+3. Unique room ID is generated
+4. Room is allocated
+5. Inventory is updated
+6. Booking is confirmed
 
 ---
 
 ## Key Features
 
-* Fair request handling (FIFO)
-* No request bypassing
-* No inventory mutation
-* Clean separation from allocation logic
-
----
-
-## Output
-
-Displays:
-
-* Guest name
-* Requested room type
-* Order of requests (FIFO)
+* No double booking
+* FIFO processing
+* Real-time inventory updates
+* Consistent system state
 
 ---
 
 ## Learning Outcome
 
-* Understand Queue data structure
-* Implement FIFO behavior
-* Ensure fairness in system design
-* Prepare for booking allocation logic
+* Implement uniqueness using Set
+* Combine multiple data structures
+* Handle real-world booking scenarios
+* Ensure system consistency
 
 ---
 
@@ -94,14 +88,10 @@ Displays:
 
 app/src/
 ├── HotelBookingApp.java
-├── Room.java
-├── SingleRoom.java
-├── DoubleRoom.java
-├── SuiteRoom.java
 ├── RoomInventory.java
-├── RoomSearchService.java
-├── Reservation.java
 ├── BookingQueue.java
+├── BookingService.java
+... (other files)
 
 ---
 
