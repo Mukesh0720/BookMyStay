@@ -1,86 +1,90 @@
-# UC6 - Booking Allocation & Inventory Update
+# UC7 - Add-On Service Selection
 
 ## Objective
 
-To confirm booking requests by assigning rooms safely while ensuring inventory consistency and preventing double-booking.
+To extend the booking system by allowing guests to select optional services without modifying core booking or inventory logic.
 
 ---
 
 ## Concepts Covered
 
-* Set (Uniqueness enforcement)
-* HashMap (Grouped tracking)
-* FIFO Queue Processing
-* Inventory Synchronization
-* Atomic Operations
+* Map + List Combination
+* One-to-Many Relationship
+* Composition over Inheritance
+* Separation of Concerns
+* Cost Aggregation
 
 ---
 
 ## Problem Statement
 
-Without controlled allocation:
+Without add-on service support:
 
-* Same room may be assigned multiple times
-* Inventory may become inconsistent
-* Booking system becomes unreliable
+* Bookings remain static and inflexible
+* No way to attach additional services
+* Real-world booking scenarios cannot be modeled
+* Pricing lacks modularity
 
 ---
 
 ## Solution
 
-A BookingService is introduced to:
+An AddOnServiceManager is introduced to:
 
-* Process requests from queue (FIFO)
-* Assign unique room IDs
-* Prevent duplicates using Set
-* Update inventory immediately
+* Attach multiple services to a reservation
+* Maintain a mapping between reservation and services
+* Calculate additional cost separately
+* Keep booking and inventory logic unchanged
 
 ---
 
 ## Components
 
-### 1. BookingService
+### 1. AddOnService
 
-* Handles booking logic
-* Ensures safe allocation
+* Represents a service (e.g., Breakfast, Spa)
+* Contains service name and cost
 
-### 2. Set<String>
+### 2. AddOnServiceManager
 
-* Stores allocated room IDs
-* Prevents duplicates
+* Manages service selection
+* Stores mapping of reservation → services
 
-### 3. HashMap<String, Set<String>>
+### 3. Map<String, List<AddOnService>>
 
-* Maps room types to allocated room IDs
+* Maps reservation ID to list of services
+* Enables efficient lookup and flexible expansion
 
 ---
 
 ## Application Flow
 
-1. Booking requests are dequeued
-2. Availability is checked
-3. Unique room ID is generated
-4. Room is allocated
-5. Inventory is updated
-6. Booking is confirmed
+1. Booking is completed (from UC6)
+2. Guest selects add-on services
+3. Services are added to a list
+4. List is mapped to reservation ID
+5. Total add-on cost is calculated
+6. Booking system remains unchanged
 
 ---
 
 ## Key Features
 
-* No double booking
-* FIFO processing
-* Real-time inventory updates
-* Consistent system state
+* Multiple services per reservation
+* Clean separation from booking logic
+* Easy addition of new services
+* Modular cost calculation
+* No impact on inventory system
 
 ---
 
 ## Learning Outcome
 
-* Implement uniqueness using Set
-* Combine multiple data structures
-* Handle real-world booking scenarios
-* Ensure system consistency
+* Implement one-to-many relationships
+* Use Map and List together effectively
+* Design extensible systems
+* Separate core and optional features
+* Build modular pricing systems
 
 ---
 
@@ -91,6 +95,8 @@ app/src/
 ├── RoomInventory.java
 ├── BookingQueue.java
 ├── BookingService.java
+├── AddOnService.java
+├── AddOnServiceManager.java
 ... (other files)
 
 ---
